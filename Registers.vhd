@@ -1,3 +1,12 @@
+
+-- ====== Arquitectura de Computadoras I, 2025
+-- =======
+-- === Realizado por Juan Peñalba, Lautaro Bettini, Oliverio Papuccio  ===
+
+-- === Registers.
+-- =======
+
+
 library IEEE;
   use IEEE.std_logic_1164.all;
   use IEEE.std_logic_arith.all;

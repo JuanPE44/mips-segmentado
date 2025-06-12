@@ -1,3 +1,11 @@
+
+-- ====== Arquitectura de Computadoras I, 2025
+-- =======
+-- === Realizado por Juan Peñalba, Lautaro Bettini, Oliverio Papuccio  ===
+
+-- === Procesador Mips segmentado en 3 etapas.
+-- =======
+
 library IEEE;
 use IEEE.STD_LOGIC_1164.all;
 use IEEE.STD_LOGIC_SIGNED.all;
@@ -157,82 +165,82 @@ end process;
 
 ------------------------------ CONTROL UNIT ----------------------------------------
 
-    E_UC: process (if_idEx_DataIn) 
-    begin
-        case (if_idEx_DataIn(31 downto 26)) is
-            -- R-type
-            when "000000" =>
-                RegWrite <= '1';
-                RegDst <= '1';
-                Branch <= '0';
-                MemRead <= '0';
-                MemtoReg <= '0';
-                MemWrite <= '0';
-                ALUSrc <= '0';
-                Jump <= '0';
-                ALUOp <= "10";
-            
-            -- lw
-            when "100011" => 
-                RegWrite <= '1';
-                RegDst <= '0';
-                Branch <= '0';
-                MemRead <= '1';
-                MemtoReg <= '1';
-                MemWrite <= '0';
-                ALUSrc <= '1';
-                Jump <= '0';
-                ALUOp <= "00";
-                
-            -- sw 
-            when "101011" => 
-                RegWrite <= '0';
-                RegDst <= '0';
-                Branch <= '0';
-                MemRead <= '0';
-                MemtoReg <= '0';
-                MemWrite <= '1';
-                ALUSrc <= '1';
-                Jump <= '0';
-                ALUOp <= "00";
+E_UC: process (if_idEx_DataIn) 
+begin
+  case (if_idEx_DataIn(31 downto 26)) is
+    -- R-type
+    when "000000" =>
+        RegWrite <= '1';
+        RegDst <= '1';
+        Branch <= '0';
+        MemRead <= '0';
+        MemtoReg <= '0';
+        MemWrite <= '0';
+        ALUSrc <= '0';
+        Jump <= '0';
+        ALUOp <= "10";
+    
+    -- lw
+    when "100011" => 
+        RegWrite <= '1';
+        RegDst <= '0';
+        Branch <= '0';
+        MemRead <= '1';
+        MemtoReg <= '1';
+        MemWrite <= '0';
+        ALUSrc <= '1';
+        Jump <= '0';
+        ALUOp <= "00";
+        
+    -- sw 
+    when "101011" => 
+        RegWrite <= '0';
+        RegDst <= '0';
+        Branch <= '0';
+        MemRead <= '0';
+        MemtoReg <= '0';
+        MemWrite <= '1';
+        ALUSrc <= '1';
+        Jump <= '0';
+        ALUOp <= "00";
 
-            -- beq 
-            when "000100" => 
-                RegWrite <= '0';
-                RegDst <= '0';
-                Branch <= '1';
-                MemRead <= '0';
-                MemtoReg <= '0';
-                MemWrite <= '0';
-                ALUSrc <= '0';
-                Jump <= '0';
-                ALUOp <= "01";
-          
-            -- jump
-            when "000010" =>
-                RegWrite <= '0';
-                RegDst <= '0';
-                Branch <= '0';
-                MemRead <= '0';
-                MemtoReg <= '0';
-                MemWrite <= '0';
-                ALUSrc <= '0';
-                Jump <= '1';
-                ALUOp <= "00";        
-		
-            -- otros
-            when others =>		
-                RegWrite <= '0';
-                RegDst <= '0';
-                Branch <= '0';
-                MemRead <= '0';
-                MemtoReg <= '0';
-                MemWrite <= '0';
-                ALUSrc <= '0';
-                Jump <= '0';
-                ALUOp <= "00";		
-        end case;
-    end process;
+    -- beq 
+    when "000100" => 
+        RegWrite <= '0';
+        RegDst <= '0';
+        Branch <= '1';
+        MemRead <= '0';
+        MemtoReg <= '0';
+        MemWrite <= '0';
+        ALUSrc <= '0';
+        Jump <= '0';
+        ALUOp <= "01";
+  
+    -- jump
+    when "000010" =>
+        RegWrite <= '0';
+        RegDst <= '0';
+        Branch <= '0';
+        MemRead <= '0';
+        MemtoReg <= '0';
+        MemWrite <= '0';
+        ALUSrc <= '0';
+        Jump <= '1';
+        ALUOp <= "00";        
+
+    -- otros
+    when others =>		
+        RegWrite <= '0';
+        RegDst <= '0';
+        Branch <= '0';
+        MemRead <= '0';
+        MemtoReg <= '0';
+        MemWrite <= '0';
+        ALUSrc <= '0';
+        Jump <= '0';
+        ALUOp <= "00";		
+  end case;
+end process;
   
 
 ------------------------------- REGISTROS ------------------------------------------

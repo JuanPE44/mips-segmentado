@@ -1,3 +1,12 @@
+
+-- ====== Arquitectura de Computadoras I, 2025
+-- =======
+-- === Realizado por Juan Peñalba, Lautaro Bettini, Oliverio Papuccio  ===
+
+-- === Procesador Mips segmentado en 3 etapas.
+-- =======
+
+
 library IEEE;
   use IEEE.std_logic_1164.all;
   use IEEE.numeric_std.all;

@@ -1,8 +1,6 @@
 
 -- ====== Arquitectura de Computadoras I, 2025
 -- =======
--- === Realizado por Martín Vázquez  ===
-
 -- === Memorias Harvard de Programa y Datos.
 -- == El parámetro genérico C_FUNC_CLK indica si la memoria funciona en flanco ascendente o descendente 
 -- =======
@@ -11,8 +9,6 @@ library ieee;
 use ieee.std_logic_1164.all; 
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-
-	
 
 entity ProcessorTB is
 end ProcessorTB;
