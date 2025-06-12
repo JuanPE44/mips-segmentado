@@ -130,7 +130,6 @@ end process;
 pc_4 <= reg_pc + 4;
 
 -- mux que maneja carga de PC o jump
--- next_reg_pc <= pc_jump when (Jump = '1') else pc_branch when ((ALU_zero='1') and (Branch='1')) else if_idEx_pc_4;
 next_reg_pc <= pc_jump when (Jump = '1') else pc_branch when ((ALU_zero='1') and (Branch='1')) else pc_4;
 
 
@@ -158,76 +157,83 @@ end process;
 
 ------------------------------ CONTROL UNIT ----------------------------------------
 
-E_UC: process (if_idEx_DataIn)
-begin
-  case (if_idEx_DataIn(31 downto 26)) is
-  -- R-type
-    when "000000" =>
-      RegWrite <= '1';
-      RegDst <= '1';
-      Branch <= '0';
-      MemRead <= '0';
-      MemtoReg <= '0';
-      MemWrite <= '0';
-      ALUSrc <= '0';
-      Jump <= '0';
-      ALUOp <= "10";
-    -- lw
-    when "100011" =>
-      RegWrite <= '1';
-      RegDst <= '0';
-      Branch <= '0';
-      MemRead <= '1';
-      MemtoReg <= '1';
-      MemWrite <= '0';
-      ALUSrc <= '1';
-      Jump <= '0';
-      ALUOp <= "00";
-    -- sw
-    when "101011" =>
-      RegDst <= '0';
-      Branch <= '0';
-      MemRead <= '0';
-      MemtoReg <= '0';
-      MemWrite <= '1';
-      ALUSrc <= '1';
-      Jump <= '0';
-      ALUOp <= "00";
-    -- beq
-    when "000100" =>
-      RegWrite <= '0';
-      RegDst <= '0';
-      Branch <= '1';
-      MemRead <= '0';
-      MemtoReg <= '0';
-      MemWrite <= '0';
-      ALUSrc <= '0';
-      Jump <= '0';
-      ALUOp <= "01";
-    -- jump
-    when "000010" =>
-      RegWrite <= '0';
-      RegDst <= '0';
-      Branch <= '0';
-      MemRead <= '0';
-      MemtoReg <= '0';
-      MemWrite <= '0';
-      ALUSrc <= '0';
-      Jump <= '1';
-      ALUOp <= "00";
-    -- otros
-    when others =>
-      RegWrite <= '0';
-      RegDst <= '0';
-      Branch <= '0';
-      MemRead <= '0';
-      MemtoReg <= '0';
-      MemWrite <= '0';
-      ALUSrc <= '0';
-      Jump <= '0';
-      ALUOp <= "00";
-  end case;
-end process;
+    E_UC: process (if_idEx_DataIn) 
+    begin
+        case (if_idEx_DataIn(31 downto 26)) is
+            -- R-type
+            when "000000" =>
+                RegWrite <= '1';
+                RegDst <= '1';
+                Branch <= '0';
+                MemRead <= '0';
+                MemtoReg <= '0';
+                MemWrite <= '0';
+                ALUSrc <= '0';
+                Jump <= '0';
+                ALUOp <= "10";
+            
+            -- lw
+            when "100011" => 
+                RegWrite <= '1';
+                RegDst <= '0';
+                Branch <= '0';
+                MemRead <= '1';
+                MemtoReg <= '1';
+                MemWrite <= '0';
+                ALUSrc <= '1';
+                Jump <= '0';
+                ALUOp <= "00";
+                
+            -- sw 
+            when "101011" => 
+                RegWrite <= '0';
+                RegDst <= '0';
+                Branch <= '0';
+                MemRead <= '0';
+                MemtoReg <= '0';
+                MemWrite <= '1';
+                ALUSrc <= '1';
+                Jump <= '0';
+                ALUOp <= "00";
+
+            -- beq 
+            when "000100" => 
+                RegWrite <= '0';
+                RegDst <= '0';
+                Branch <= '1';
+                MemRead <= '0';
+                MemtoReg <= '0';
+                MemWrite <= '0';
+                ALUSrc <= '0';
+                Jump <= '0';
+                ALUOp <= "01";
+          
+            -- jump
+            when "000010" =>
+                RegWrite <= '0';
+                RegDst <= '0';
+                Branch <= '0';
+                MemRead <= '0';
+                MemtoReg <= '0';
+                MemWrite <= '0';
+                ALUSrc <= '0';
+                Jump <= '1';
+                ALUOp <= "00";        
+		
+            -- otros
+            when others =>		
+                RegWrite <= '0';
+                RegDst <= '0';
+                Branch <= '0';
+                MemRead <= '0';
+                MemtoReg <= '0';
+                MemWrite <= '0';
+                ALUSrc <= '0';
+                Jump <= '0';
+                ALUOp <= "00";		
+        end case;
+    end process;
+  
 
 ------------------------------- REGISTROS ------------------------------------------
 
@@ -247,19 +253,16 @@ Port map (
 reg_wr <= if_idEx_DataIn(20 downto 16) when (RegDst='0') else if_idEx_DataIn(15 downto 11);
 
 -- extension de signo del operando inmediato de la instruccion
--- inm_extended(31 downto 16) <= x"FFFF" when (if_idEx_DataIn(15)='1') else x"0000";
-inm_extended(31 downto 16) <= (others => if_idEx_DataIn(15)); -- Copia el bit de signo
+inm_extended(31 downto 16) <= x"FFFF" when (if_idEx_DataIn(15)='1') else x"0000";
 inm_extended(15 downto 0) <= if_idEx_DataIn(15 downto 0);
 
 -- mux correspondiente a segundo operando de ALU
-
 ALU_oper_b <= data2_reg when (ALUSrc='0') else inm_extended;
 
 ----------------------------- SALTOS PC/jump ---------------------------------------
 
 -- determina salto incondicional
---pc_jump <= (if_idEx_pc_4(31 downto 28)&inm_extended(25 downto 0)&"00"); -- FUNCIONA??
-pc_jump <= (if_idEx_pc_4(31 downto 28) & if_idEx_DataIn(25 downto 0) & "00");
+pc_jump <= (if_idEx_pc_4(31 downto 28)&inm_extended(25 downto 0)&"00"); -- FUNCIONA??
 
 -- determina salto condicional por iguales
 pc_branch <= if_idEx_pc_4 + (inm_extended(29 downto 0)&"00"); -- FUNCIONA??
@@ -276,24 +279,37 @@ port map(
 );
 
 -- Control de la ALU
-E_CtlALU: process (ALUOp, if_idEx_DataIn)
-begin
-case ALUOp is
--- lw o sw
-when "00" => ALU_control <= "010";
-when  "01" => ALU_control <= "110";
--- R-type
-when "10" =>
-      if (if_idEx_DataIn(5 downto 0) = "100000") then ALU_control <= "010"; --add
-      elsif (if_idEx_DataIn(5 downto 0) = "100010") then ALU_control <= "110"; --sub
-      elsif (if_idEx_DataIn(5 downto 0) = "100100") then ALU_control <= "000"; --and
-      elsif (if_idEx_DataIn(5 downto 0) = "100101") then ALU_control <= "001"; --or
-      elsif (if_idEx_DataIn(5 downto 0) = "101010") then ALU_control <= "111"; --slt
-      else ALU_control <= "000"; --beq
-      end if;
-    when others => ALU_control <= "000";
-end case;
-end process;
+  E_CtlALU: process (ALUOp, if_idEx_DataIn)
+    begin 
+      
+        case ALUOp is
+            -- lw o sw
+            when "00" => 
+                ALU_control <= "010"; 
+           
+            -- R-type
+            when "10" =>
+                if (if_idEx_DataIn(5 downto 0) = "100000") then
+                    ALU_control <= "010"; --add 
+                elsif (if_idEx_DataIn(5 downto 0) = "100010") then
+                    ALU_control <= "110"; --sub
+                elsif (if_idEx_DataIn(5 downto 0) = "100100") then
+                    ALU_control <= "000"; --and
+                elsif (if_idEx_DataIn(5 downto 0) = "100101") then
+                    ALU_control <= "001"; --or
+                elsif (if_idEx_DataIn(5 downto 0) = "101010") then
+                    ALU_control <= "111"; --slt
+                else
+                    ALU_control <= "000";
+                end if;
+                         
+            -- beq
+            when "01" =>
+                ALU_control <= "110";        
+            when others => 
+                ALU_control <= "000"; 
+        end case;
+    end process;
 
 
 ---------------------------------------------------------------------------------------
