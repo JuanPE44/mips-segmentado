@@ -1,0 +1,25 @@
+
+Informe
+- participantes
+  -foto
+  -Lautaro Bettini 46555072 
+  -Juan Peñalba dni    
+  -Oliver Papussio dni  
+
+- como lo pensamos
+    -como encaramos el trabajo
+        "en el comienzo teniamos la duda de plantear la segmentacion como registros o simplemente con señales, nos terminamos decantando por señales y procesos ya que nos pareci la manera mas correcta de hacerlo,  ya que nos permitia tener una mejor visualizacion de los datos y poder trabajar de manera mas efectiva
+    -por que medio lo hicimos/herramientas
+        "para poder ordenarnos y tratar de que todos puedan trabajar en armonia usamos live share para poder codear todos  y analisar el codigo todo s gunto
+- que hicimos ;, - miro  MIRP
+    - cambiamos el flanco de la memoria de datos de 1 a 0. ¿Por que?
+    - agregamos señales para los registros de segmentacion
+    - implementamos los dos registros de segmentacion para if/id+ex y id+ex/mem+wb
+    - pensamos procesos para que funcionen como segmentos
+    - Modificamos los nombres de las variables para mas claridad
+    
+- cambio de las señales segmentadas  
+   
+- la conclucion del trabajo
+
+- por fabor no nos desaprueve wasquito querido, te hacemos un favorsito cada uno ;u
